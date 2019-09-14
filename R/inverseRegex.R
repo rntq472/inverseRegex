@@ -81,11 +81,6 @@
 ##' 
 ##' unique(inverseRegex(iris, numbersToKeep = 1:10))
 ##' 
-##' ## Note the difference in the third element using these two approaches.
-##' x <- data.frame(a = c(1, 1.1, 12.1, 12.12))
-##' inverseRegex(x)
-##' inverseRegex(x$a)
-##' 
 ##' @seealso occurrencesLessThan, regex
 ##' 
 ##' @author Jasper Watson
