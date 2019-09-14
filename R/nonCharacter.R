@@ -53,7 +53,7 @@ inverseRegex.matrix <- function(x, ...){
     out <- matrix(NA_character_, nrow = nrow(x), ncol = ncol(x), dimnames = dimnames(x))
     
     for (ii in 1:nrow(out))
-        out[ii, ] <- inverseRegex(x[ii, ], ...)
+        out[ii, ] <- inverseRegex(tmp[ii, ], ...)
     
     out[is.nan(x)] <- 'NaN'
     out[is.infinite(x)] <- as.character(x[is.infinite(x)])
@@ -72,8 +72,7 @@ inverseRegex.data.frame <- function(x, ...){
         
         if (inherits(x[[jj]], 'numeric') ){
             
-            tmp <- vapply(x[[jj]], format, character(1), nsmall = 1)
-            tmp <- trimws(format(tmp))
+            tmp <- trimws(format(x[[jj]]))
             tmp[is.na(x[[jj]]) & !is.nan(x[[jj]])] <- NA_character_
             
             tmp <- inverseRegex(tmp, ...)
@@ -108,8 +107,7 @@ inverseRegex.tibble <- function(x, ...){
         
         if (inherits(x[[jj]], 'numeric') ){
             
-            tmp <- vapply(x[[jj]], format, character(1), nsmall = 1)
-            tmp <- trimws(format(tmp))
+            tmp <- trimws(format(x[[jj]]))
             tmp[is.na(x[[jj]]) & !is.nan(x[[jj]])] <- NA_character_
             
             tmp <- inverseRegex(tmp, ...)

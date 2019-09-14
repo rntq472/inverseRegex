@@ -143,21 +143,21 @@ test_that('NA values are passed through correctly', {
 
     ## Can't test factor as concatenating a factor with an NA will convert it to an
     ## integer or character.
-
+    
     x <- matrix(c(1:3, NA), nrow = 2)
     expect_equal(inverseRegex(x), matrix(c(rep('[[:digit:]]', 3), NA_character_), nrow = 2))
-
-    x <- data.frame(a = c(1, NA), b = c('a', NA), stringsAsFactors = FALSE)
+    
+    x <- data.frame(a = c(1.1, NA), b = c('a', NA), stringsAsFactors = FALSE)
     expect_equal(inverseRegex(x),
                  data.frame(a = c('[[:digit:]].[[:digit:]]', NA_character_),
                             b = c('[[:lower:]]', NA_character_),
                             stringsAsFactors = FALSE),
                  check.attributes = FALSE
                  )
-
+    
     if (requireNamespace('tibble', quietly = TRUE) ){
         
-        x <- tibble::tibble(a = c(1, NA), b = c('a', NA), stringsAsFactors = FALSE)
+        x <- tibble::tibble(a = c(1.1, NA), b = c('a', NA), stringsAsFactors = FALSE)
         expect_equal(inverseRegex(x),
                      tibble::tibble(a = c('[[:digit:]].[[:digit:]]', NA_character_),
                                     b = c('[[:lower:]]', NA_character_),
@@ -174,6 +174,10 @@ test_that('The special numeric characters work as expected', {
     out <- c('[[:digit:]].[[:digit:]]', NA, '[[:digit:]].[[:digit:]]{2}', 'NaN', 'Inf', '-Inf')
     
     expect_equal(inverseRegex(x), out)
+
+    out <- c('[[:digit:]].[[:digit:]]{2}', NA, '[[:digit:]].[[:digit:]]{2}', 'NaN',
+             'Inf', '-Inf')
+    
     expect_equal(inverseRegex(as.matrix(x, nrow = 2)), as.matrix(out, nrow = 2))
     expect_equal(inverseRegex(data.frame(a = x)), data.frame(a = out, stringsAsFactors = FALSE),
                  check.attributes = FALSE)
