@@ -167,3 +167,15 @@ test_that('NA values are passed through correctly', {
     }
     
 })
+
+test_that('The special numeric characters work as expected', {
+
+    x <- c(1, NA, 3.45, NaN, Inf, -Inf)
+    out <- c('[[:digit:]].[[:digit:]]', NA, '[[:digit:]].[[:digit:]]{2}', 'NaN', 'Inf', '-Inf')
+    
+    expect_equal(inverseRegex(x), out)
+    expect_equal(inverseRegex(as.matrix(x, nrow = 2)), as.matrix(out, nrow = 2))
+    expect_equal(inverseRegex(data.frame(a = x)), data.frame(a = out, stringsAsFactors = FALSE),
+                 check.attributes = FALSE)
+    
+})

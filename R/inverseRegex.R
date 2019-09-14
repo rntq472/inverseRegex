@@ -40,7 +40,9 @@
 ##'     \item Logical: Left as is. Converting to character would not provide any
 ##'           simplification.
 ##'     \item Numeric: Converted to character by applying \code{format(..., nsmall = 1)}
-##'           element by element.
+##'           element by element. NA values will be returned as NA_character_, whilst
+##'           \code{NaN}, \code{Inf}, and \code{-Inf} will be returned as literal
+##'           strings: \code{"NaN"}, \code{"Inf"}, and \code{"-Inf"}.
 ##'     \item Date: Converted using \code{as.character()}.
 ##'     \item POSIXct: Converted using \code{as.character()}.
 ##'     \item Data frame: Each column is assessed individually and the results
@@ -72,14 +74,16 @@
 ##' alphabets the combineCases argument will need to be set to TRUE otherwise they
 ##' will not be detected by "lower" and "upper".
 ##' 
-##' NA values in the input will be reported as NA_character_ and not "[[:upper:]]{2}".
+##' NA values in the input will remain as NA values in the output.
 ##' 
 ##' @examples
-##' inverseRegex('Hello There!')
+##' inverseRegex('Hello World!')
 ##' 
 ##' table(inverseRegex(c(rep('HELLO', 10), 'HELL0')))
 ##' 
 ##' unique(inverseRegex(iris, numbersToKeep = 1:10))
+##'
+##' inverseRegex(c(1, NA, 3.45, NaN, Inf, -Inf))
 ##' 
 ##' @seealso occurrencesLessThan, regex
 ##' 
