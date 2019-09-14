@@ -1,0 +1,23 @@
+Package: inverseRegex
+Title: Reverse Engineers Regular Expression Patterns for R Objects
+Version: 0.1.0
+Authors@R: person("Jasper", "Watson", email = "jasper.g.watson@gmail.com",
+    role = c("aut", "cre"))
+Description: A tool for investigating the pattern of characters contained in an
+    R object. Individual characters are collapsed into groupings of digits,
+    letters, punctuation, and spaces, giving a regex reverse-engineering. This
+    can be used to summarise the structure of a dataset or identify non-standard
+    entries. Many non-character inputs such as numeric vectors and data frames
+    are supported.
+Depends: R (>= 3.5.0)
+Suggests: 
+    tibble,
+    testthat,
+    knitr,
+    rmarkdown
+License: MIT + file LICENSE
+Encoding: UTF-8
+BugReports: https://github.com/rntq472/inverseRegex/issues
+LazyData: true
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
