@@ -7,8 +7,8 @@
 ##' @param fraction Fraction of the R object size; regex patterns that occur less
 ##' (or equal) often than this will be identified. For a vector this fraction will
 ##' be multiplied by the length of the object; for a matrix it will be multiplied by
-##' the total number of entries; and for a data frame or tibbble it will be multiplied
-##' by the number of rows. Defaults to \code{0.1}.
+##' the total number of entries; and for a data frame or tibble it will be multiplied
+##' by the number of rows. Defaults to \code{0.05}.
 ##' @param n Alternative to the \code{fraction} argument which allows a literal
 ##' number of occurrences to be searched for. Defaults to NULL, in which case
 ##' \code{fraction} will be used.
@@ -39,7 +39,7 @@
 ##' 
 ##
 occurrencesLessThan <- function(x,
-                                fraction = 0.1,
+                                fraction = 0.05,
                                 n = NULL,
                                 ...
                                 ){
@@ -52,7 +52,7 @@ occurrencesLessThan <- function(x,
 occurrencesLessThan.default <- function(...)
     stop('Input class not supported')
 
-vectorOption <- function(x, fraction = 0.1, n = NULL, ...){
+vectorOption <- function(x, fraction = 0.05, n = NULL, ...){
     
     out <- rep(FALSE, length(x))
 
@@ -72,35 +72,35 @@ vectorOption <- function(x, fraction = 0.1, n = NULL, ...){
     
 }
 ##' @export
-occurrencesLessThan.character <- function(x, fraction = 0.1, n = NULL,  ...)
+occurrencesLessThan.character <- function(x, fraction = 0.05, n = NULL,  ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.logical <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.logical <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.integer <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.integer <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.numeric <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.numeric <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.Date <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.Date <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.POSIXct <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.POSIXct <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.factor <- function(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan.factor <- function(x, fraction = 0.05, n = NULL, ...)
     vectorOption(x, fraction, n, ...)
 
 ##' @export
-occurrencesLessThan.matrix <- function(x, fraction = 0.1, n = NULL, ...){
+occurrencesLessThan.matrix <- function(x, fraction = 0.05, n = NULL, ...){
     
     out <- matrix(FALSE, nrow = nrow(x), ncol = ncol(x), dimnames = dimnames(x))
     
@@ -121,7 +121,7 @@ occurrencesLessThan.matrix <- function(x, fraction = 0.1, n = NULL, ...){
 }
 
 ##' @export
-occurrencesLessThan.data.frame <- function(x, fraction = 0.1, n = NULL, ...){
+occurrencesLessThan.data.frame <- function(x, fraction = 0.05, n = NULL, ...){
 
     if (is.null(n))
         n <- nrow(x) * fraction
@@ -148,7 +148,7 @@ occurrencesLessThan.data.frame <- function(x, fraction = 0.1, n = NULL, ...){
 }
 
 ##' @export
-occurrencesLessThan.tibble <- function(x, fraction = 0.1, n = NULL, ...){
+occurrencesLessThan.tibble <- function(x, fraction = 0.05, n = NULL, ...){
 
     if (!requireNamespace('tibble', quietly = TRUE))
         stop('Package tibble not available. Install or provide input as a data.frame.')

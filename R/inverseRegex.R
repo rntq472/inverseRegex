@@ -26,9 +26,9 @@
 ##' characters. Defaults to FALSE. Set to TRUE if you want to use the returned
 ##' value as an argument to grep.
 ##' 
-##' @return A set of character strings giving regex patterns that match the input
-##' data. These patterns will be in a form that matches the inputs; either vector,
-##' matrix, data frame, or tibble.
+##' @return A set of regex patterns that match the input data. These patterns will
+##' either be character vectors or as the same class as the input object if it was
+##' a matrix, data frame, or tibble.
 ##' 
 ##' @details
 ##' 
