@@ -1,11 +1,11 @@
 ##' Reverse Engineers a Regular Expression Pattern to Represent the Input Object.
 ##' 
-##' Deconstructs the input into collections of letters, digits, puncuation, and
+##' Deconstructs the input into collections of letters, digits, punctuation, and
 ##' spaces that represent a regex pattern consistent with that input.
 ##' 
 ##' @param x Object to derive a regex pattern for.
 ##' @param numbersToKeep Set of numbers giving the length for which elements
-##' repeated that many times should be counted explicity
+##' repeated that many times should be counted explicitly
 ##' (e.g. "[[:digit:]]\{5\}"). Repeat sequences not included in numbersToKeep
 ##' will be coded with a "+" (e.g. "[[:digit:]]+"). Defaults to c(2, 3, 4, 5, 10).
 ##' Set to NULL to have all runs coded as "+" and set to \code{2:maxCharacters}
