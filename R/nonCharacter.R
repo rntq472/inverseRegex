@@ -95,7 +95,7 @@ inverseRegex.data.frame <- function(x, ...){
 }
 
 ##' @export
-inverseRegex.tibble <- function(x, ...){
+inverseRegex.tbl_df <- function(x, ...){
     
     if (!requireNamespace('tibble', quietly = TRUE))
         stop('Package tibble not available. Install or provide input as a data.frame.')

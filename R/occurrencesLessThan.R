@@ -150,7 +150,7 @@ occurrencesLessThan.data.frame <- function(x, fraction = 0.05, n = NULL, ...){
 }
 
 ##' @export
-occurrencesLessThan.tibble <- function(x, fraction = 0.05, n = NULL, ...){
+occurrencesLessThan.tbl_df <- function(x, fraction = 0.05, n = NULL, ...){
 
     if (!requireNamespace('tibble', quietly = TRUE))
         stop('Package tibble not available. Install or provide input as a data.frame.')
