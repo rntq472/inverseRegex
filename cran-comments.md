@@ -4,5 +4,5 @@
 * win-builder (devel, release, and oldrelease)
 
 ## R CMD check results
-No errors or warnings.
-One note - new submission.
+* No errors or warnings.
+* One note - new submission.
