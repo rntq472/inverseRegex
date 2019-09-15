@@ -19,9 +19,11 @@
 ##' input object; matrices, data frames, and tibbles will be returned in kind; all
 ##' others are returned as vectors.
 ##' 
-##' @details This function is essentially a wrapper around calling \code{table} on
+##' @details This function is essentially a wrapper around calling \code{table()} on
 ##' the return value of \code{inverseRegex}. It can be used to identify the indices
 ##' of values that consist of a regex pattern different to others in the R object.
+##' 
+##' @note NA values are not considered and will need to be identified separately.
 ##' 
 ##' @examples
 ##' occurrencesLessThan(c(LETTERS, 1))

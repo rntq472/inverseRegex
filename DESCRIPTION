@@ -3,9 +3,9 @@ Title: Reverse Engineers Regular Expression Patterns for R Objects
 Version: 0.1.0
 Authors@R: person("Jasper", "Watson", email = "jasper.g.watson@gmail.com",
     role = c("aut", "cre"))
-Description: A tool for investigating the pattern of characters contained in an
-    R object. Individual characters are collapsed into groupings of digits,
-    letters, punctuation, and spaces, giving a regex reverse-engineering. This
+Description: Reverse engineer a regular expression pattern for the characters
+    contained in an R object. Individual characters can be categorised into
+    digits, letters, punctuation or spaces and encoded into run-lengths. This
     can be used to summarise the structure of a dataset or identify non-standard
     entries. Many non-character inputs such as numeric vectors and data frames
     are supported.

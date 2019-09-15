@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ```
 # inverseRegex
 
-The inverseRegex package allows users to reverse engineer regex patterns for R objects. Individual characters that make up an object are collapsed into common groups and simplified into unique run-lengths. This could be useful to summarise a dataset without viewing all individual entries or to aid in data cleaning.
+The inverseRegex package allows users to reverse engineer regular expression patterns for R objects. Individual characters can be categorised into digits, letters, punctuation or spaces and encoded into run-lengths. This could be useful to summarise a dataset without viewing all individual entries or to aid in data cleaning.
 
 The vignette [vignettes/overview.Rmd](https://github.com/rntq472/inverseRegex/blob/master/vignettes/overview.Rmd) contains an introduction to the package.
 

@@ -14,6 +14,8 @@ test_that('Various characters all work', {
     expect_equal(inverseRegex('\\'), '\\')
     expect_equal(inverseRegex(' \t\n\r'), ' \t\n\r')
     
+    expect_equal(inverseRegex('a', enclose = TRUE), '^[[:lower:]]$')
+    
 })
 
 test_that('The combineCases argument works', {

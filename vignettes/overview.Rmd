@@ -24,9 +24,9 @@ library(inverseRegex)
 
 # inverseRegex
 
-The inverseRegex package allows users to reverse engineer regex patterns for R objects. Individual characters that make up an object are collapsed into common groups and simplified into unique run-lengths. For example, the phrase "Hello World!" can be translated to `"[[:upper:]][[:lower:]]{4} [[:upper:]][[:lower:]]{4}!"`. 
+The inverseRegex package allows users to reverse engineer regular expression patterns for R objects. Individual characters that make up an object are categorised into common groups and encoded into run-lengths. For example, the phrase "Hello World!" can be translated to `"[[:upper:]][[:lower:]]{4} [[:upper:]][[:lower:]]{4}!"`. 
 
-This could be useful to summarise a dataset without viewing all individual entries or to aid in data cleaning. For example one could check that a column of dates all follow a "nnnn-nn-nn" format or that a column of strings consisted entirely of alphabetic characters (no zeros entered instead of the letter O for example).
+This could be useful to summarise a dataset without viewing all individual entries or to aid in data cleaning. One could check that a column of dates all follow a "nnnn-nn-nn" format or that a column of strings consisted entirely of alphabetic characters (no zeros entered instead of the letter O for example).
 
 ## Usage
 
@@ -59,7 +59,7 @@ inverseRegex('Hello World!', combineSpace = TRUE, combinePunctuation = TRUE)
 
 ```
 
-Users can also specify the different run lengths that will be identified. When using regex one can specify run lengths using `+`, `*`, `{n, }`, and so on. The `inverseRegex` function has an argument called `numbersToKeep` which allows the user to specify what lengths of repeated sequences should be identified explicitly. The default value is `c(2, 3, 4, 5, 10)`. Run lengths not requested will be identified with a `+`.
+Users can also specify the different run lengths that will be identified. The `inverseRegex` function has an argument called `numbersToKeep` which allows the user to specify what lengths of repeated sequences should be identified explicitly. The default value is `c(2, 3, 4, 5, 10)`. Run lengths not requested will be identified with a `+`.
 
 ```{r, echo = TRUE}
 inverseRegex('abcd1234567')
@@ -70,7 +70,7 @@ inverseRegex('abcd1234567', numbersToKeep = 1:10)
 
 ## Non-character Inputs
 
-Many objects with a class other than `character` are supported, including `logical`, `integer`, `numeric`, `Date`, `POSIXct`, `factor`, `matrix`, `data.frame`, and `tibble`. They are all (except `logical`) converted to characters first and then the collection of regex patterns returned either as character vectors or as the same class as the input object if it was one with a `dim` attribute. See `?inverseRegex` for a full description of how they are treated. If users need a different character conversion method they can do it themselves prior to calling `inverseRegex`.
+Many objects with a class other than `character` are supported, including `logical`, `integer`, `numeric`, `Date`, `POSIXct`, `factor`, `matrix`, `data.frame`, and `tibble`. They are all (except `logical`) converted to characters first and then the collection of regex patterns returned either as character vectors or as the same class as the input object if it was a matrix, data frame, or tibble. See `?inverseRegex` for a full description of how they are treated. If users need a different character conversion method they can do it themselves prior to calling `inverseRegex`.
 
 Special mention of numerics and data frames will be given here:
 
@@ -86,7 +86,7 @@ inverseRegex(c(1, 1.0, 1.10, 1.12, 1.123), numbersToKeep = 2:10)
 inverseRegex(1L)
 
 ```
-Numerics are treated differently if they are present in a matrix, data frame, or tibble. In the case of a matrix if it has a mode of numeric then the entire object will be converted to character using `trimws(format(x))`. For data frames and tibbles each column of type numeric will be converted using `trimws(format(x))`. This means that unlike for numeric vectors described above, all numeric entries in matrices and data.frames / tibbles columns will have the same number of decimal places.
+Numerics are treated differently if they are present in a matrix, data frame, or tibble. In the case of a matrix if it has a mode of numeric then the entire object will be converted to character using `trimws(format(x))`. For data frames and tibbles each column of type numeric will be converted using `trimws(format(x))`. This means that unlike for numeric vectors described above, all numeric entries in matrices, data frames, and tibbles will have the same number of decimal places.
 
 ```{r, echo = TRUE}
 inverseRegex(c(1, 1.0, 1.10, 1.12, 1.123))

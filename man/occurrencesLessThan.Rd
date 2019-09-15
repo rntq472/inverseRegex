@@ -4,7 +4,7 @@
 \alias{occurrencesLessThan}
 \title{Identifies Infrequent inverseRegex Patterns in an R Object.}
 \usage{
-occurrencesLessThan(x, fraction = 0.1, n = NULL, ...)
+occurrencesLessThan(x, fraction = 0.05, n = NULL, ...)
 }
 \arguments{
 \item{x}{Object to analyse for infrequent regex patterns.}
@@ -12,8 +12,8 @@ occurrencesLessThan(x, fraction = 0.1, n = NULL, ...)
 \item{fraction}{Fraction of the R object size; regex patterns that occur less
 (or equal) often than this will be identified. For a vector this fraction will
 be multiplied by the length of the object; for a matrix it will be multiplied by
-the total number of entries; and for a data frame or tibbble it will be multiplied
-by the number of rows. Defaults to \code{0.1}.}
+the total number of entries; and for a data frame or tibble it will be multiplied
+by the number of rows. Defaults to \code{0.05}.}
 
 \item{n}{Alternative to the \code{fraction} argument which allows a literal
 number of occurrences to be searched for. Defaults to NULL, in which case
@@ -32,9 +32,12 @@ Calls \code{inverseRegex} on the input object and identifies values that
 occur infrequently.
 }
 \details{
-This function is essentially a wrapper around calling \code{table} on
+This function is essentially a wrapper around calling \code{table()} on
 the return value of \code{inverseRegex}. It can be used to identify the indices
 of values that consist of a regex pattern different to others in the R object.
+}
+\note{
+NA values are not considered and will need to be identified separately.
 }
 \examples{
 occurrencesLessThan(c(LETTERS, 1))

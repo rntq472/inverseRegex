@@ -1,4 +1,4 @@
-##' Reverse Engineers a Regex Pattern to Represent the Input Object.
+##' Reverse Engineers a Regular Expression Pattern to Represent the Input Object.
 ##' 
 ##' Deconstructs the input into collections of letters, digits, puncuation, and
 ##' spaces that represent a regex pattern consistent with that input.
@@ -7,8 +7,8 @@
 ##' @param numbersToKeep Set of numbers giving the length for which elements
 ##' repeated that many times should be counted explicity
 ##' (e.g. "[[:digit:]]\{5\}"). Repeat sequences not included in numbersToKeep
-##' will be coded with a "+" (e.g. "[[:digits:]]+"). Defaults to c(2, 3, 4, 5, 10).
-##' Set to NULL to have all runs coded as "+" and set to \code{1:maxCharacters}
+##' will be coded with a "+" (e.g. "[[:digit:]]+"). Defaults to c(2, 3, 4, 5, 10).
+##' Set to NULL to have all runs coded as "+" and set to \code{2:maxCharacters}
 ##' to have the length specified for all repeated values. If one is included then
 ##' all unique patterns with be counted as "\{1\}"; if it is not then the "\{1\}"
 ##' is left off.
@@ -25,9 +25,11 @@
 ##' @param escapePunctuation Logical indicating whether to escape any punctuation
 ##' characters. Defaults to FALSE. Set to TRUE if you want to use the returned
 ##' value as an argument to grep.
+##' @param enclose Logical indicating whether to surround each returned value
+##' with \code{'^'} and \code{'$'}. Defaults to FALSE.
 ##' 
 ##' @return A set of regex patterns that match the input data. These patterns will
-##' either be character vectors or as the same class as the input object if it was
+##' either be character vectors or the same class as the input object if it was
 ##' a matrix, data frame, or tibble.
 ##' 
 ##' @details
@@ -54,10 +56,9 @@
 ##'           column is passed to \code{trimws(format(...))}. This will lead to a
 ##'           common number of digits to the right of the decimal point and a variable
 ##'           number of digits with no padding on the left side.
-##'     \item Matrix: Each column is assessed one by one and combined together. The
-##'           overall output will be a matrix of regex patterns with the same
-##'           dimensions as the input. If the matrix has a mode of numeric then it
-##'           will first be passed to \code{trimws(format(...))}. 
+##'     \item Matrix: Creates a matrix of regex patterns with the same dimensions
+##'           as the input. If the matrix has a mode of numeric then it will first
+##'           be passed to \code{trimws(format(...))}.
 ##'     \item Tibble: Same as a data frame except the returned object is a tibble.
 ##'           Requires the tibble package to be installed.
 ##'     \item Anything else: Not supported; an error will be thrown.
@@ -99,7 +100,8 @@ inverseRegex <- function(x,
                          combinePunctuation = FALSE,
                          combineSpace = FALSE,
                          sep = '',
-                         escapePunctuation = FALSE
+                         escapePunctuation = FALSE,
+                         enclose = FALSE
                          ){
     
     UseMethod('inverseRegex')
@@ -114,7 +116,8 @@ inverseRegex.character <- function(x,
                                    combinePunctuation = FALSE,
                                    combineSpace = FALSE,
                                    sep = '',
-                                   escapePunctuation = FALSE
+                                   escapePunctuation = FALSE,
+                                   enclose = FALSE
                                    ){
     
     out <- rep(NA_character_, length(x))
@@ -181,8 +184,12 @@ inverseRegex.character <- function(x,
         rr$lengths <- ifelse(rr$lengths %in% numbersToKeep, tmp,
                       ifelse(rr$lengths == 1, '', '+')
                       )
-        
-        result <- paste(paste0(rr$values, rr$lengths), collapse = sep)
+
+        if (enclose){
+            result <- paste0('^', paste(paste0(rr$values, rr$lengths), collapse = sep), '$')
+        } else {
+            result <- paste(paste0(rr$values, rr$lengths), collapse = sep)
+        }
         
         out[ii] <- result
         
