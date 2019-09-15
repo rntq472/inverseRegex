@@ -166,6 +166,8 @@ test_that('NA values are passed through correctly', {
                                     stringsAsFactors = FALSE),
                      check.attributes = FALSE
                      )
+        expect_true(inherits(inverseRegex(tibble::tibble(a = 1:10)), 'tbl_df'))
+        
     }
     
 })
