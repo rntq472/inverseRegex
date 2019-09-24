@@ -1,6 +1,6 @@
 Package: inverseRegex
 Title: Reverse Engineers Regular Expression Patterns for R Objects
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: person("Jasper", "Watson", email = "jasper.g.watson@gmail.com",
     role = c("aut", "cre"))
 Description: Reverse engineer a regular expression pattern for the characters
