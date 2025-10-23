@@ -61,33 +61,33 @@ spaces that represent a regex pattern consistent with that input.
 }
 \details{
 The fundamental use of inverseRegex applies only to strings. Inputs of a class
-other than character are treated as follows: 
+other than character are treated as follows:
 \itemize{
-    \item Integer: Converted using \code{as.character()}.
-    \item Factor: Converted using \code{as.character()}.
-    \item Logical: Left as is. Converting to character would not provide any
-          simplification.
-    \item Numeric: Converted to character by applying \code{format(..., nsmall = 1)}
-          element by element. NA values will be returned as NA_character_, whilst
-          \code{NaN}, \code{Inf}, and \code{-Inf} will be returned as literal
-          strings: \code{"NaN"}, \code{"Inf"}, and \code{"-Inf"}.
-    \item Date: Converted using \code{as.character()}.
-    \item POSIXct: Converted using \code{as.character()}.
-    \item Data frame: Each column is assessed individually and the results
-          combined together so that the output is a data frame of regex patterns
-          with the same dimensions as the input. The columns of class other than
-          character will each be converted as described previously, with one
-          exception: Unlike above where numerics are passed to
-          \code{format(..., nsmall = 1)} element by element, here the entire
-          column is passed to \code{trimws(format(...))}. This will lead to a
-          common number of digits to the right of the decimal point and a variable
-          number of digits with no padding on the left side.
-    \item Matrix: Creates a matrix of regex patterns with the same dimensions
-          as the input. If the matrix has a mode of numeric then it will first
-          be passed to \code{trimws(format(...))}.
-    \item Tibble: Same as a data frame except the returned object is a tibble.
-          Requires the tibble package to be installed.
-    \item Anything else: Not supported; an error will be thrown.
+\item Integer: Converted using \code{as.character()}.
+\item Factor: Converted using \code{as.character()}.
+\item Logical: Left as is. Converting to character would not provide any
+simplification.
+\item Numeric: Converted to character by applying \code{format(..., nsmall = 1)}
+element by element. NA values will be returned as NA_character_, whilst
+\code{NaN}, \code{Inf}, and \code{-Inf} will be returned as literal
+strings: \code{"NaN"}, \code{"Inf"}, and \code{"-Inf"}.
+\item Date: Converted using \code{as.character()}.
+\item POSIXct: Converted using \code{as.character()}.
+\item Data frame: Each column is assessed individually and the results
+combined together so that the output is a data frame of regex patterns
+with the same dimensions as the input. The columns of class other than
+character will each be converted as described previously, with one
+exception: Unlike above where numerics are passed to
+\code{format(..., nsmall = 1)} element by element, here the entire
+column is passed to \code{trimws(format(...))}. This will lead to a
+common number of digits to the right of the decimal point and a variable
+number of digits with no padding on the left side.
+\item Matrix: Creates a matrix of regex patterns with the same dimensions
+as the input. If the matrix has a mode of numeric then it will first
+be passed to \code{trimws(format(...))}.
+\item Tibble: Same as a data frame except the returned object is a tibble.
+Requires the tibble package to be installed.
+\item Anything else: Not supported; an error will be thrown.
 }
 
 If these conversion methods are not appropriate then you can do the conversion
