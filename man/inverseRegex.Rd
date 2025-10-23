@@ -4,10 +4,17 @@
 \alias{inverseRegex}
 \title{Reverse Engineers a Regular Expression Pattern to Represent the Input Object.}
 \usage{
-inverseRegex(x, numbersToKeep = c(2, 3, 4, 5, 10),
-  combineCases = FALSE, combineAlphanumeric = FALSE,
-  combinePunctuation = FALSE, combineSpace = FALSE, sep = "",
-  escapePunctuation = FALSE, enclose = FALSE)
+inverseRegex(
+  x,
+  numbersToKeep = c(2, 3, 4, 5, 10),
+  combineCases = FALSE,
+  combineAlphanumeric = FALSE,
+  combinePunctuation = FALSE,
+  combineSpace = FALSE,
+  sep = "",
+  escapePunctuation = FALSE,
+  enclose = FALSE
+)
 }
 \arguments{
 \item{x}{Object to derive a regex pattern for.}

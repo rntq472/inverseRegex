@@ -65,7 +65,10 @@ test_that('The escapePunctuation argument works', {
     expect_equal(inverseRegex('~!@#$%^&*()_+}{|":?><,./;[]-='),
                  '~!@#$%^&*()_+}{|":?><,./;[]-=')
     expect_equal(inverseRegex('\\'), '\\')
-    
+        
+    expect_equal(inverseRegex('~!@#$%^&*()_+}{|":?><,./;[]-=', escapePunctuation = TRUE),
+                 '\\~\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\_\\+\\}\\{\\|\\"\\:\\?\\>\\<\\,\\.\\/\\;\\[\\]\\-\\=')
+    expect_equal(inverseRegex('\\', escapePunctuation = TRUE), '\\\\')
 })
 
 test_that('We get an error for a non-supported input class', {
@@ -86,9 +89,11 @@ test_that('Inputs other than type character work as expected', {
                                      character(1), nsmall = 1))
                  )
     
-    expect_equal(inverseRegex(Sys.Date()), inverseRegex(as.character(Sys.Date())))
+    expect_equal(inverseRegex(structure(19281, class = "Date")),
+                 inverseRegex(as.character(structure(19281, class = "Date"))))
     
-    expect_equal(inverseRegex(Sys.time()), inverseRegex(as.character(Sys.time())))
+    expect_equal(inverseRegex(structure(1665840397.51796, class = c("POSIXct", "POSIXt"))),
+                 inverseRegex(as.character(structure(1665840397.51796, class = c("POSIXct", "POSIXt")))))
     
     expect_equal(inverseRegex(as.factor(letters)), inverseRegex(letters))
     
@@ -121,12 +126,6 @@ test_that('Inputs other than type character work as expected', {
     
 })
 
-test_that('The escapePunctuation argument works as intended', {
-    
-    expect_equal(inverseRegex('!', escapePunctuation = TRUE), '\\!')
-    
-})
-
 test_that('NA values are passed through correctly', {
     
     expect_equal(inverseRegex(NA_character_), NA_character_)
@@ -138,10 +137,11 @@ test_that('NA values are passed through correctly', {
 
     expect_equal(inverseRegex(c(1, NA)), c('[[:digit:]].[[:digit:]]', NA_character_))
     
-    expect_equal(inverseRegex(c(Sys.Date(), NA)),
+    expect_equal(inverseRegex(c(structure(19281, class = "Date"), NA)),
                  c('[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}', NA_character_))
     
-    expect_equal(inverseRegex(c(Sys.time(), NA))[2], NA_character_)
+    expect_equal(inverseRegex(c(structure(1665840397.51796, class = c("POSIXct", "POSIXt")), NA))[2],
+                 NA_character_)
 
     ## Can't test factor as concatenating a factor with an NA will convert it to an
     ## integer or character.

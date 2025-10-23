@@ -1,6 +1,6 @@
 Package: inverseRegex
 Title: Reverse Engineers Regular Expression Patterns for R Objects
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: person("Jasper", "Watson", email = "jasper.g.watson@gmail.com",
     role = c("aut", "cre"))
 Description: Reverse engineer a regular expression pattern for the characters
@@ -18,6 +18,5 @@ Suggests:
 License: MIT + file LICENSE
 Encoding: UTF-8
 BugReports: https://github.com/rntq472/inverseRegex/issues
-LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.2
 VignetteBuilder: knitr
