@@ -71,6 +71,15 @@ test_that("The escapePunctuation argument works", {
     expect_identical(inverseRegex("\\", escapePunctuation = TRUE), "\\\\")
 })
 
+test_that("The priority argument works", {
+
+    expect_identical(inverseRegex("AB", priority = "A"), "A[[:upper:]]")
+    expect_identical(inverseRegex("AB", priority = c("A", "[[:upper:]]")), "A[[:upper:]]")
+    expect_identical(inverseRegex("AB", priority = c("A", "[[:upper:]]", "B")), "A[[:upper:]]")
+
+    expect_identical(inverseRegex("abc123?!", priority = c("a", "1", "!", "[[:lower:]]", "[[:digit:]]", ".")), "a[[:lower:]]{2}1[[:digit:]]{2}.!")
+})
+
 test_that("We get an error for a non-supported input class", {
 
     x <- 1:10
@@ -82,47 +91,47 @@ test_that("We get an error for a non-supported input class", {
 
 test_that("Inputs other than type character work as expected", {
 
-   expect_identical(inverseRegex(1:10), inverseRegex(as.character(1:10)))
+    expect_identical(inverseRegex(1:10), inverseRegex(as.character(1:10)))
 
-   expect_identical(inverseRegex(seq(0, 1, length.out = 10)),
-                    inverseRegex(vapply(seq(0, 1, length.out = 10), format,
-                                        character(1), nsmall = 1))
-                    )
+    expect_identical(inverseRegex(seq(0, 1, length.out = 10)),
+                     inverseRegex(vapply(seq(0, 1, length.out = 10), format,
+                                         character(1), nsmall = 1))
+                     )
 
-   expect_identical(inverseRegex(structure(19281, class = "Date")),
-                    inverseRegex(as.character(structure(19281, class = "Date"))))
+    expect_identical(inverseRegex(structure(19281, class = "Date")),
+                     inverseRegex(as.character(structure(19281, class = "Date"))))
 
-   expect_identical(inverseRegex(structure(1665840397.51796, class = c("POSIXct", "POSIXt"))),
-                    inverseRegex(as.character(structure(1665840397.51796, class = c("POSIXct", "POSIXt")))))
+    expect_identical(inverseRegex(structure(1665840397.51796, class = c("POSIXct", "POSIXt"))),
+                     inverseRegex(as.character(structure(1665840397.51796, class = c("POSIXct", "POSIXt")))))
 
-   expect_identical(inverseRegex(as.factor(letters)), inverseRegex(letters))
+    expect_identical(inverseRegex(as.factor(letters)), inverseRegex(letters))
 
-   expect_identical(inverseRegex(matrix(1:4, nrow = 2)),
-                    matrix("[[:digit:]]", nrow = 2, ncol = 2)
-                    )
-   expect_identical(inverseRegex(matrix(letters[1:4], nrow = 2)),
-                    matrix("[[:lower:]]", nrow = 2, ncol = 2)
-                    )
+    expect_identical(inverseRegex(matrix(1:4, nrow = 2)),
+                     matrix("[[:digit:]]", nrow = 2, ncol = 2)
+                     )
+    expect_identical(inverseRegex(matrix(letters[1:4], nrow = 2)),
+                     matrix("[[:lower:]]", nrow = 2, ncol = 2)
+                     )
 
-   expect_equal(inverseRegex(data.frame(a = 1:26, b = LETTERS,
-                                        stringsAsFactors = FALSE)),
-                data.frame(a = c(rep("[[:digit:]]", 9), rep("[[:digit:]]{2}", 17)),
-                           b = rep("[[:upper:]]", 26),
-                           stringsAsFactors = FALSE),
-                check.attributes = FALSE
-                )
+    expect_equal(inverseRegex(data.frame(a = 1:26, b = LETTERS,
+                                         stringsAsFactors = FALSE)),
+                 data.frame(a = c(rep("[[:digit:]]", 9), rep("[[:digit:]]{2}", 17)),
+                            b = rep("[[:upper:]]", 26),
+                            stringsAsFactors = FALSE),
+                 check.attributes = FALSE
+                 )
 
-   if (requireNamespace("tibble", quietly = TRUE)) {
+    if (requireNamespace("tibble", quietly = TRUE)) {
 
-       expect_equal(inverseRegex(tibble::tibble(a = 1:26, b = LETTERS,
-                                                stringsAsFactors = FALSE)),
-                    tibble::tibble(a = c(rep("[[:digit:]]", 9), rep("[[:digit:]]{2}", 17)),
-                                   b = rep("[[:upper:]]", 26),
-                                   stringsAsFactors = FALSE),
-                    check.attributes = FALSE
-                    )
+        expect_equal(inverseRegex(tibble::tibble(a = 1:26, b = LETTERS,
+                                                 stringsAsFactors = FALSE)),
+                     tibble::tibble(a = c(rep("[[:digit:]]", 9), rep("[[:digit:]]{2}", 17)),
+                                    b = rep("[[:upper:]]", 26),
+                                    stringsAsFactors = FALSE),
+                     check.attributes = FALSE
+                     )
 
-   }
+    }
 
 })
 
@@ -165,7 +174,7 @@ test_that("NA values are passed through correctly", {
                                     b = c("[[:lower:]]", NA_character_),
                                     stringsAsFactors = FALSE),
                      check.attributes = FALSE
-                   )
+                     )
         expect_s3_class(inverseRegex(tibble::tibble(a = 1:10)), "tbl_df")
 
     }

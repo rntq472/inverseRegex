@@ -27,6 +27,9 @@
 ##' value as an argument to grep.
 ##' @param enclose Logical indicating whether to surround each returned value
 ##' with \code{'^'} and \code{'$'}. Defaults to FALSE.
+##' @param priority Character vector allowing users to specify characters that
+##' will take precedence over regex grouping patterns. Defaults to NULL, meaning
+##' it is ignored. See @details for more information.
 ##'
 ##' @return A set of regex patterns that match the input data. These patterns will
 ##' either be character vectors or the same class as the input object if it was
@@ -75,6 +78,14 @@
 ##' alphabets the combineCases argument will need to be set to TRUE otherwise they
 ##' will not be detected by "lower" and "upper".
 ##'
+##' The priority argument allows users to exclude certain characters from being grouped
+##' into the regex patterns described above. For example when using the string "ABC"
+##' if using priority = c("A", "[[:upper:]]", "B") then the result would be "A[[:upper:]]\{2\}"
+##' since the "A" is a higher priority than the "[[:upper:]]" grouping. If you leave
+##' the regex groups out then they are assumed to take last priority (meaning in that
+##' example using priority = "A" would give the same result). One can also use '.' to
+##' make certain characters be collapsed together.
+##'
 ##' NA values in the input will remain as NA values in the output.
 ##'
 ##' @examples
@@ -85,6 +96,8 @@
 ##' unique(inverseRegex(iris, numbersToKeep = 1:10))
 ##'
 ##' inverseRegex(c(1, NA, 3.45, NaN, Inf, -Inf))
+##'
+##' inverseRegex('abc123?!', priority = c('a', '1', '!', '[[:lower:]]', '[[:digit:]]', '.'))
 ##'
 ##' @seealso occurrencesLessThan, regex
 ##'
@@ -101,7 +114,8 @@ inverseRegex <- function(x,
                          combineSpace = FALSE,
                          sep = "",
                          escapePunctuation = FALSE,
-                         enclose = FALSE
+                         enclose = FALSE,
+                         priority = NULL
                          ) {
 
     UseMethod("inverseRegex")
@@ -121,8 +135,11 @@ inverseRegex.character <- function(x,
                                    combineSpace = FALSE,
                                    sep = "",
                                    escapePunctuation = FALSE,
-                                   enclose = FALSE
+                                   enclose = FALSE,
+                                   priority = NULL
                                    ) {
+
+    stopifnot(is.null(priority) || (is.character(priority)))
 
     out <- rep(NA_character_, length(x))
 
@@ -144,6 +161,39 @@ inverseRegex.character <- function(x,
         space <- grepl("[[:space:]]", chars)
         punct <- grepl("[[:punct:]]", chars)
 
+        if (!is.null(priority)) {
+
+            if (!("[[:digit:]]" %in% priority))
+                priority <- c(priority, "[[:digit:]]")
+
+            if (!("[[:lower:]]" %in% priority))
+                priority <- c(priority, "[[:lower:]]")
+
+            if (!("[[:upper:]]" %in% priority))
+                priority <- c(priority, "[[:upper:]]")
+
+            if (!("[[:alpha:]]" %in% priority))
+                priority <- c(priority, "[[:alpha:]]")
+
+            if (!("[[:alnum:]]" %in% priority))
+                priority <- c(priority, "[[:alnum:]]")
+
+            if (!("[[:space:]]" %in% priority))
+                priority <- c(priority, "[[:space:]]")
+
+            if (!("[[:punct:]]" %in% priority))
+                priority <- c(priority, "[[:punct:]]")
+
+            digit <- digit & !(chars %in% priority[seq_len(which(priority == "[[:digit:]]"))])
+            lower <- lower & !(chars %in% priority[seq_len(which(priority == "[[:lower:]]"))])
+            upper <- upper & !(chars %in% priority[seq_len(which(priority == "[[:upper:]]"))])
+            alpha <- alpha & !(chars %in% priority[seq_len(which(priority == "[[:alpha:]]"))])
+            alnum <- alnum & !(chars %in% priority[seq_len(which(priority == "[[:alnum:]]"))])
+            space <- space & !(chars %in% priority[seq_len(which(priority == "[[:space:]]"))])
+            punct <- punct & !(chars %in% priority[seq_len(which(priority == "[[:punct:]]"))])
+
+        }
+
         if (!combinePunctuation && escapePunctuation) {
 
             ## chars are all length one so we can just grepl and paste. No need
@@ -158,12 +208,28 @@ inverseRegex.character <- function(x,
 
             chars[alnum] <- "[[:alnum:]]"
 
+            if (!is.null(priority)) {
+
+                priority[priority %in% c("[[:digit:]]",
+                                         "[[:alpha:]]",
+                                         "[[:lower:]]",
+                                         "[[:upper:]]")] <- "[[:alnum:]]"
+
+            }
+
         } else {
 
             if (combineCases) {
 
                 chars[digit] <- "[[:digit:]]"
                 chars[alpha] <- "[[:alpha:]]"
+
+                if (!is.null(priority)) {
+
+                    priority[priority %in% c("[[:lower:]]",
+                                             "[[:upper:]]")] <- "[[:alpha:]]"
+
+                }
 
             } else {
 
@@ -174,11 +240,36 @@ inverseRegex.character <- function(x,
             }
         }
 
-        if (combineSpace)
+        if (combineSpace) {
+
             chars[space] <- "[[:space:]]"
 
-        if (combinePunctuation)
+            if (!is.null(priority)) {
+
+                priority[priority %in% c(" ", "\n", "\t", "\r", "\f", "\v")] <- "[[:space:]]"
+
+            }
+        }
+
+        if (combinePunctuation) {
+
             chars[punct] <- "[[:punct:]]"
+
+            if (!is.null(priority)) {
+
+                priority[priority %in% c("'", "!", '"', "#", "$", "%", "&", ",",
+                                         "(", ")", "*", "+", ",", "-", ".", "/",
+                                         ":", ";", "<", "=", ">", "?", "@", "[",
+                                         "\\", "]", "^", "_", "`", "{", "|", "}",
+                                         "~", ".")] <- "[[:punct:]]"
+            }
+        }
+
+        if (!is.null(priority) && "." %in% priority) {
+
+            chars[!(chars %in% priority[seq_len(which(priority == "."))])] <- "."
+
+        }
 
         rr <- rle(chars)
 
