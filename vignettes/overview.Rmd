@@ -67,6 +67,13 @@ inverseRegex('abcd1234567', numbersToKeep = NULL)
 inverseRegex('abcd1234567', numbersToKeep = 1:10)
 ```
 
+## Priority
+
+The priority argument allows users to specify characters that will take precedence over the regex grouping patterns, or to make them a lower priority than the generic `.` placeholder. For example below the `a` and `1` characters are treated separately to the `[[:lower:]]` and `[[:upper:]]` groups, whilst the `?` is treated as a lower priority than the `.`, unlike the `!`.
+
+```{r, echo = TRUE}
+inverseRegex('abc123?!', priority = c('a', '1', '!', '[[:lower:]]', '[[:digit:]]', '.'))
+```
 
 ## Non-character Inputs
 

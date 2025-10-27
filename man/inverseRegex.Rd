@@ -13,7 +13,8 @@ inverseRegex(
   combineSpace = FALSE,
   sep = "",
   escapePunctuation = FALSE,
-  enclose = FALSE
+  enclose = FALSE,
+  priority = NULL
 )
 }
 \arguments{
@@ -49,6 +50,10 @@ value as an argument to grep.}
 
 \item{enclose}{Logical indicating whether to surround each returned value
 with \code{'^'} and \code{'$'}. Defaults to FALSE.}
+
+\item{priority}{Character vector allowing users to specify characters that
+will take precedence over regex grouping patterns. Defaults to NULL, meaning
+it is ignored. See @details for more information.}
 }
 \value{
 A set of regex patterns that match the input data. These patterns will
@@ -101,6 +106,14 @@ search patterns will be left as is. Note that for characters from unicameral
 alphabets the combineCases argument will need to be set to TRUE otherwise they
 will not be detected by "lower" and "upper".
 
+The priority argument allows users to exclude certain characters from being grouped
+into the regex patterns described above. For example when using the string "ABC"
+if using priority = c("A", "[[:upper:]]", "B") then the result would be "A[[:upper:]]\{2\}"
+since the "A" is a higher priority than the "[[:upper:]]" grouping. If you leave
+the regex groups out then they are assumed to take last priority (meaning in that
+example using priority = "A" would give the same result). One can also use '.' to
+make certain characters be collapsed together.
+
 NA values in the input will remain as NA values in the output.
 }
 \examples{
@@ -111,6 +124,8 @@ table(inverseRegex(c(rep('HELLO', 10), 'HELL0')))
 unique(inverseRegex(iris, numbersToKeep = 1:10))
 
 inverseRegex(c(1, NA, 3.45, NaN, Inf, -Inf))
+
+inverseRegex('abc123?!', priority = c('a', '1', '!', '[[:lower:]]', '[[:digit:]]', '.'))
 
 }
 \seealso{
