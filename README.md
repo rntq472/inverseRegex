@@ -12,7 +12,7 @@ all individual entries or to aid in data cleaning.
 An overview of the package can be found on
 [CRAN](https://CRAN.R-project.org/package=inverseRegex/vignettes/overview.html)
 or in
-[vignettes/overview.Rmd](https://github.com/rntq472/inverseRegex/blob/master/vignettes/overview.Rmd).
+[vignettes/overview.Rmd](https://github.com/rntq472/inverseRegex/blob/master/vignettes/Overview.Rmd).
 
 ## Installation
 
